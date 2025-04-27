@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prediksi Kasus Pneumonia Jawa Barat</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4CAF50;
+            --secondary-color: #2196F3;
+            --background-dark: #1E1E1E;
+            --card-bg: #2D2D2D;
+            --text-light: #FFFFFF;
+            --text-muted: #BBBBBB;
+            --gradient-start: #4CAF50;
+            --gradient-end: #2196F3;
+        }
+
+        body {
+            background: var(--background-dark);
+            color: var(--text-light);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: 60px;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            padding: 4rem 0;
+            margin-bottom: 3rem;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 0 100%);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .input-group {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+        }
+
+        .btn-predict {
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-weight: 600;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-predict:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .prediction-result {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(33, 150, 243, 0.1));
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .prediction-value {
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 1rem 0;
+        }
+
+        .plot-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        .plot-img {
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        footer {
+            background: var(--card-bg);
+            padding: 1rem;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .stats-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .stats-value {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .stats-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="hero-title">
+                <i class="fas fa-brain me-2"></i>
+                Prediksi Kasus Pneumonia
+            </h1>
+            <p class="hero-subtitle">
+                Sistem prediksi berbasis Artificial Neural Network untuk memperkirakan jumlah kasus Pneumonia di Jawa
+                Barat
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card mb-4">
+                    <div class="card-body p-4">
+                        <form id="predictionForm">
+                            <div class="mb-4">
+                                <label class="form-label text-muted">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    Tahun Prediksi
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="year" name="year" min="2024"
+                                        max="2030" required placeholder="Masukkan tahun (2024-2030)">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-predict w-100">
+                                <i class="fas fa-magic me-2"></i>
+                                Lakukan Prediksi
+                            </button>
+                        </form>
+
+                        <div class="loading mt-4">
+                            <i class="fas fa-spinner"></i>
+                            <p class="mt-3">Sedang memproses prediksi...</p>
+                        </div>
+
+                        <div id="predictionResult" class="prediction-result mt-4">
+                            <div class="result-card">
+                                <h5 class="mb-3">Hasil Prediksi</h5>
+                                <div class="prediction-value" id="predictedValue">0</div>
+                                <p class="text-muted">
+                                    Prediksi jumlah kasus untuk tahun
+                                    <span id="predictedYear" class="fw-bold">2024</span>
+                                </p>
+                            </div>
+
+                            <div class="plot-container">
+                                <h6 class="mb-3">
+                                    <i class="fas fa-chart-line me-2"></i>
+                                    Visualisasi Trend
+                                </h6>
+                                <img id="predictionPlotImage" class="plot-img" alt="Grafik Prediksi">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>
+            <i class="fas fa-code me-2"></i>
+            Dibuat dengan Artificial Neural Network
+            <i class="fas fa-heart mx-2" style="color: var(--primary-color)"></i>
+            Jawa Barat, 2024
+        </p>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const loading = document.querySelector('.loading');
+            const predictionResult = document.getElementById('predictionResult');
+            const year = document.getElementById('year').value;
+
+            loading.style.display = 'block';
+            predictionResult.style.display = 'none';
+
+            fetch('/predict', {
+                method: 'POST',
+                body: new FormData(this)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById('predictedYear').textContent = data.year;
+                        document.getElementById('predictedValue').textContent = data.prediction.toLocaleString();
+                        document.getElementById('predictionPlotImage').src = data.plot_url + '?t=' + new Date().getTime();
+                        predictionResult.style.display = 'block';
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error);
+                })
+                .finally(() => {
+                    loading.style.display = 'none';
+                });
+        });
+    </script>
+</body>
+
+</html>
